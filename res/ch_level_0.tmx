@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="8" tileheight="8" infinite="0" nextlayerid="3" nextobjectid="5">
+ <tileset firstgid="1" source="cave_hallows_tileset.tsx"/>
+ <layer id="1" name="terrain" width="16" height="16">
+  <properties>
+   <property name="solid" type="bool" value="true"/>
+  </properties>
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+8,9,9,9,10,0,0,0,0,0,0,0,0,0,0,0,
+24,25,25,25,26,0,0,0,0,0,0,0,0,0,0,0,
+24,25,25,25,26,0,8,9,9,10,0,0,0,0,0,0,
+24,25,25,25,26,0,24,25,25,26,0,0,0,0,0,0,
+40,41,41,41,42,0,40,41,41,42,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="2" name="Objects">
+  <properties>
+   <property name="excalibur" type="bool" value="true"/>
+  </properties>
+  <object id="3" name="Player" type="player-start" x="8" y="8">
+   <point/>
+  </object>
+ </objectgroup>
+</map>
