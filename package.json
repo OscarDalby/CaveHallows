@@ -1,0 +1,25 @@
+{
+  "name": "sample-tiled-parcel",
+  "version": "1.0.0",
+  "description": "Sample Excalibur Tiled Plugin with Vite",
+  "scripts": {
+    "start": "vite",
+    "start:debug": "vite -d",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "author": {
+    "name": "Excalibur.js Team",
+    "email": "excaliburjs@gmail.com",
+    "url": "http://excaliburjs.com"
+  },
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "@excaliburjs/plugin-tiled": "0.29.0",
+    "excalibur": "0.29.0"
+  },
+  "devDependencies": {
+    "typescript": "5.3.3",
+    "vite": "5.1.3"
+  }
+}
