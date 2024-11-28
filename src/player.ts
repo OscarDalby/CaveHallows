@@ -10,7 +10,7 @@ export class Player extends ex.Actor {
   friction: number = 0.5;
   maxJumps: number = 1;
   // properties
-  isGrounded: boolean = true;
+  grounded: boolean = true;
   numJumps: number = 1;
 
   constructor(pos: ex.Vector) {
@@ -45,8 +45,14 @@ export class Player extends ex.Actor {
   private checkIfGrounded(): void {
     this.on("collisionstart", (ev) => {
       if (ev.side === "Bottom") {
-        this.isGrounded = true;
+        this.grounded = true;
         this.numJumps = this.maxJumps;
+      }
+    });
+
+    this.on("collisionend", (ev) => {
+      if (ev.side === "Bottom") {
+        this.grounded = false;
       }
     });
   }
@@ -60,7 +66,7 @@ export class Player extends ex.Actor {
   }
 
   private jump(): void {
-    if (this.numJumps <= 0) {
+    if (this.numJumps <= 0 || !this.grounded) {
       return;
     } else if (this.numJumps >= 1) {
       this.vel.y = -this.jumpStrength;
