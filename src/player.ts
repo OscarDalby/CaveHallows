@@ -51,6 +51,14 @@ export class Player extends ex.Actor {
     });
   }
 
+  private checkDirection(): void {
+    if (this.vel.x > 0) {
+      this.graphics.flipHorizontal = false;
+    } else if (this.vel.x < 0) {
+      this.graphics.flipHorizontal = true;
+    }
+  }
+
   private jump(): void {
     if (this.numJumps <= 0) {
       return;
@@ -82,8 +90,11 @@ export class Player extends ex.Actor {
     //console.log("this.vel.y", this.vel.y);
     //console.log("this.vel.x", this.vel.x);
 
-    // physics and movement logic
+    // check player states
+    this.checkDirection();
     this.checkIfGrounded();
+
+    // physics and movement logic
     this.updateGravity(delta);
     this.updateFriction();
     this.updateInput(engine);
