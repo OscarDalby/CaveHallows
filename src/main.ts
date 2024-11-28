@@ -1,7 +1,7 @@
 import * as ex from "excalibur";
 import { Resources, loader } from "./resources";
 import { Player } from "./player";
-import { speechActor } from "./speech";
+import { SpeechBubble } from "./speech";
 
 const game = new ex.Engine({
   width: 128,
@@ -14,8 +14,11 @@ const game = new ex.Engine({
 
 game.start(loader).then(() => {
   const player = new Player(new ex.Vector(50, 50));
+  const speechBubble = new SpeechBubble();
 
   Resources.TiledMap.addToScene(game.currentScene);
   game.add(player);
-  game.add(speechActor);
+
+  game.add(speechBubble.actor);
+  speechBubble.setSpeech("Hello, World!");
 });
