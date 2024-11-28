@@ -3,12 +3,15 @@ import { Resources, playerAnim } from "./resources";
 
 export class Player extends ex.Actor {
   // constants
-  gravity: number;
-  accMag: number;
-  maxSpeed: number;
-  jumpStrength: number;
-  friction: number;
+  gravity: number = 1;
+  accMag: number = 4;
+  maxSpeed: number = 5;
+  jumpStrength: number = 220;
+  friction: number = 0.5;
+  maxJumps: number = 1;
   // properties
+  isGrounded: boolean = true;
+  numJumps: number = 1;
 
   constructor(pos: ex.Vector) {
     super({
@@ -17,11 +20,7 @@ export class Player extends ex.Actor {
       height: 8,
       collisionType: ex.CollisionType.Active,
     });
-    this.gravity = 1;
-    this.accMag = 4;
-    this.maxSpeed = 5;
-    this.jumpStrength = 220;
-    this.friction = 0.5;
+    // props
   }
 
   private resetPosition(engine: ex.Engine): void {
@@ -43,8 +42,22 @@ export class Player extends ex.Actor {
     }
   }
 
+  private checkIfGrounded(): void {
+    this.on("collisionstart", (ev) => {
+      if (ev.side === "Bottom") {
+        this.isGrounded = true;
+        this.numJumps = this.maxJumps;
+      }
+    });
+  }
+
   private jump(): void {
-    this.vel.y = -this.jumpStrength;
+    if (this.numJumps <= 0) {
+      return;
+    } else if (this.numJumps >= 1) {
+      this.vel.y = -this.jumpStrength;
+      this.numJumps--;
+    }
   }
 
   private updateInput(engine: ex.Engine): void {
@@ -59,14 +72,18 @@ export class Player extends ex.Actor {
     }
   }
 
+  onInitialize(engine: ex.Engine<any>): void { }
+
   onPreUpdate(engine: ex.Engine, delta: number): void { }
 
   update(engine: ex.Engine, delta: number): void {
     // debug functions & logs
     this.resetPosition(engine);
-    console.log("this.vel.y", this.vel.y);
-    console.log("this.vel.x", this.vel.x);
+    //console.log("this.vel.y", this.vel.y);
+    //console.log("this.vel.x", this.vel.x);
+
     // physics and movement logic
+    this.checkIfGrounded();
     this.updateGravity(delta);
     this.updateFriction();
     this.updateInput(engine);
