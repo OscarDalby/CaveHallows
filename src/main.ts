@@ -1,6 +1,7 @@
 import * as ex from "excalibur";
 import { Resources, loader } from "./resources";
 import { Player } from "./player";
+import { speechActor } from "./speech";
 
 const game = new ex.Engine({
   width: 128,
@@ -16,4 +17,5 @@ game.start(loader).then(() => {
 
   Resources.TiledMap.addToScene(game.currentScene);
   game.add(player);
+  game.add(speechActor);
 });

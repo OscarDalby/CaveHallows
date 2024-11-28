@@ -1,12 +1,4 @@
-import {
-  ImageFiltering,
-  ImageSource,
-  Loader,
-  Resource,
-  Animation,
-  range,
-  SpriteSheet,
-} from "excalibur";
+import * as ex from "excalibur";
 import { TiledResource } from "@excaliburjs/plugin-tiled";
 
 import playerImagePath from "../img/void-break-player-transparent.png?url";
@@ -15,11 +7,12 @@ import tmxPath from "../res/ch_level_0.tmx?url";
 import tsxPath from "../res/cave_hallows_tileset.tsx?url";
 
 export const Resources = {
-  PlayerSpriteSheetPng: new ImageSource(
+  PlayerSpriteSheetPng: new ex.ImageSource(
     playerImagePath,
     false,
-    ImageFiltering.Pixel,
+    ex.ImageFiltering.Pixel,
   ),
+  SpriteFontImage: new ex.ImageSource("../img/sprite-font.png"),
   TiledMap: new TiledResource(tmxPath, {
     pathMap: [
       { path: "ch_level_0.tmx", output: tmxPath },
@@ -27,10 +20,10 @@ export const Resources = {
       { path: "cave_hallows_tileset.tsx", output: tsxPath },
     ],
   }),
-  TsxResource: new Resource(tsxPath, "text"),
+  TsxResource: new ex.Resource(tsxPath, "text"),
 };
 
-const playerSpriteSheet = SpriteSheet.fromImageSource({
+const playerSpriteSheet = ex.SpriteSheet.fromImageSource({
   image: Resources.PlayerSpriteSheetPng,
   grid: {
     spriteWidth: 8,
@@ -40,13 +33,13 @@ const playerSpriteSheet = SpriteSheet.fromImageSource({
   },
 });
 
-export const playerAnim = Animation.fromSpriteSheet(
+export const playerAnim = ex.Animation.fromSpriteSheet(
   playerSpriteSheet,
-  range(1, 6),
+  ex.range(1, 6),
   200,
 );
 
-export const loader = new Loader();
+export const loader = new ex.Loader();
 for (let resource of Object.values(Resources)) {
   loader.addResource(resource);
 }
