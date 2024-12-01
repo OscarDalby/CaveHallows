@@ -7,6 +7,7 @@ import tmxPath from "../res/ch_level_0.tmx?url";
 import tsxPath from "../res/cave_hallows_tileset.tsx?url";
 
 export const Resources = {
+  TilesheetPng: new ex.ImageSource(tilesetPath),
   PlayerSpriteSheetPng: new ex.ImageSource(
     playerImagePath,
     false,
@@ -23,6 +24,16 @@ export const Resources = {
   TsxResource: new ex.Resource(tsxPath, "text"),
 };
 
+export const tileSpriteSheet = ex.SpriteSheet.fromImageSource({
+  image: Resources.TilesheetPng,
+  grid: {
+    spriteWidth: 8,
+    spriteHeight: 8,
+    rows: 16,
+    columns: 16,
+  },
+});
+
 const playerSpriteSheet = ex.SpriteSheet.fromImageSource({
   image: Resources.PlayerSpriteSheetPng,
   grid: {
@@ -36,6 +47,12 @@ const playerSpriteSheet = ex.SpriteSheet.fromImageSource({
 export const playerAnim = ex.Animation.fromSpriteSheet(
   playerSpriteSheet,
   ex.range(1, 6),
+  100,
+);
+
+export const playerIdle = ex.Animation.fromSpriteSheet(
+  playerSpriteSheet,
+  ex.range(1, 2),
   200,
 );
 

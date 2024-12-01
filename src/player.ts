@@ -1,5 +1,5 @@
 import * as ex from "excalibur";
-import { Resources, playerAnim } from "./resources";
+import { Resources, playerAnim, playerIdle } from "./resources";
 
 export class Player extends ex.Actor {
   // constants
@@ -9,9 +9,12 @@ export class Player extends ex.Actor {
   jumpStrength: number = 220;
   friction: number = 0.5;
   maxJumps: number = 1;
+  maxHp: number = 3;
   // properties
   grounded: boolean = true;
   numJumps: number = 1;
+  hp: number = 3;
+  heldItem: string = "torch";
 
   constructor(pos: ex.Vector) {
     super({
@@ -20,13 +23,13 @@ export class Player extends ex.Actor {
       height: 8,
       collisionType: ex.CollisionType.Active,
     });
-    // props
   }
 
   private resetPosition(engine: ex.Engine): void {
     if (engine.input.keyboard.isHeld(ex.Keys.R)) {
       this.pos = new ex.Vector(9, 0);
       this.vel = new ex.Vector(0, 0);
+      this.hp = this.maxHp;
     }
   }
 
@@ -57,6 +60,14 @@ export class Player extends ex.Actor {
     });
   }
 
+  private checkMoving(): void {
+    if (this.vel.x > 0 || this.vel.x < 0) {
+      this.graphics.use(playerAnim);
+    } else {
+      this.graphics.use(playerIdle);
+    }
+  }
+
   private checkDirection(): void {
     if (this.vel.x > 0) {
       this.graphics.flipHorizontal = false;
@@ -75,6 +86,9 @@ export class Player extends ex.Actor {
   }
 
   private updateInput(engine: ex.Engine): void {
+    if (engine.input.keyboard.wasPressed(ex.Keys.H)) {
+      this.hurt();
+    }
     if (engine.input.keyboard.wasPressed(ex.Keys.Up)) {
       this.jump();
     }
@@ -86,9 +100,16 @@ export class Player extends ex.Actor {
     }
   }
 
-  onInitialize(engine: ex.Engine<any>): void { }
+  private hurt(): void {
+    this.hp--;
+    if (this.hp <= 0) {
+      this.kill();
+    }
+  }
 
-  onPreUpdate(engine: ex.Engine, delta: number): void { }
+  onInitialize(engine: ex.Engine<any>): void {}
+
+  onPreUpdate(engine: ex.Engine, delta: number): void {}
 
   update(engine: ex.Engine, delta: number): void {
     // debug functions & logs
@@ -97,6 +118,7 @@ export class Player extends ex.Actor {
     //console.log("this.vel.x", this.vel.x);
 
     // check player states
+    this.checkMoving();
     this.checkDirection();
     this.checkIfGrounded();
 
@@ -104,7 +126,5 @@ export class Player extends ex.Actor {
     this.updateGravity(delta);
     this.updateFriction();
     this.updateInput(engine);
-
-    this.graphics.use(playerAnim);
   }
 }
