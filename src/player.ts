@@ -1,5 +1,6 @@
 import * as ex from "excalibur";
 import { Resources, playerAnim, playerIdle } from "./resources";
+import { EnemyStatic } from "./enemies/EnemyStatic";
 
 export class Player extends ex.Actor {
   // constants
@@ -10,11 +11,13 @@ export class Player extends ex.Actor {
   friction: number = 0.5;
   maxJumps: number = 1;
   maxHp: number = 3;
+  invulnerableTimeMax: number = 150;
   // properties
   grounded: boolean = true;
   numJumps: number = 1;
   hp: number = 3;
   heldItem: string = "torch";
+  invulnerableTime: number = 0;
 
   constructor(pos: ex.Vector) {
     super({
@@ -85,6 +88,24 @@ export class Player extends ex.Actor {
     }
   }
 
+  private checkEnemyCollision(): void {
+    this.on("collisionstart", (ev) => {
+      if (this.invulnerableTime >= 0 && ev.other instanceof EnemyStatic) {
+        this.hurt();
+        this.invulnerableTime = this.invulnerableTimeMax;
+      }
+    });
+  }
+
+  private updateInvulnerableTime(delta: number): void {
+    if (this.invulnerableTime > 0) {
+      this.invulnerableTime -= delta;
+      if (this.invulnerableTime <= 0) {
+        this.invulnerableTime = 0;
+      } else {
+      }
+    }
+  }
   private updateInput(engine: ex.Engine): void {
     if (engine.input.keyboard.wasPressed(ex.Keys.H)) {
       this.hurt();
@@ -101,6 +122,9 @@ export class Player extends ex.Actor {
   }
 
   private hurt(): void {
+    if (this.invulnerableTime > 0) {
+      return;
+    }
     this.hp--;
     if (this.hp <= 0) {
       this.kill();
@@ -126,5 +150,9 @@ export class Player extends ex.Actor {
     this.updateGravity(delta);
     this.updateFriction();
     this.updateInput(engine);
+
+    // collisions
+    this.checkEnemyCollision();
+    this.updateInvulnerableTime(delta);
   }
 }
