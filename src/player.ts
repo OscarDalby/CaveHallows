@@ -89,7 +89,7 @@ export class Player extends ex.Actor {
     if (engine.input.keyboard.wasPressed(ex.Keys.H)) {
       this.hurt();
     }
-    if (engine.input.keyboard.wasPressed(ex.Keys.Up)) {
+    if (engine.input.keyboard.wasPressed(ex.Keys.D)) {
       this.jump();
     }
     if (engine.input.keyboard.isHeld(ex.Keys.Left)) {

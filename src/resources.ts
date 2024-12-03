@@ -56,6 +56,12 @@ export const playerIdle = ex.Animation.fromSpriteSheet(
   200,
 );
 
+export const enemyStaticAnim = ex.Animation.fromSpriteSheet(
+  tileSpriteSheet,
+  [74, 75],
+  100,
+);
+
 export const loader = new ex.Loader();
 for (let resource of Object.values(Resources)) {
   loader.addResource(resource);
