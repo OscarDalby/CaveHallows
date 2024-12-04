@@ -43,7 +43,7 @@ export class Player extends ex.Actor {
   }
 
   private updateGravity(delta: number): void {
-    if (!this.onLadder) {
+    if (!this.onLadder || !this.ladderNearby) {
       this.vel.y += this.gravity * delta;
     }
   }
@@ -164,11 +164,13 @@ export class Player extends ex.Actor {
 
     if (engine.input.keyboard.wasPressed(ex.Keys.Up) && this.ladderNearby) {
       this.onLadder = true;
-      console.log("climbing ladder up");
+      this.vel.y = -10;
+    } else if (engine.input.keyboard.wasReleased(ex.Keys.Up)) {
+      this.vel.y = 0;
     }
     if (engine.input.keyboard.wasPressed(ex.Keys.Down) && this.ladderNearby) {
       this.onLadder = true;
-      console.log("climbing ladder down");
+      this.vel.y = 10;
     }
   }
 
