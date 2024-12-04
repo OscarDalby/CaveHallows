@@ -62,6 +62,8 @@ export const npcAnim = ex.Animation.fromSpriteSheet(
   200,
 );
 
+export const ladderSprite = tileSpriteSheet.getSprite(2, 11);
+
 export const enemyStaticAnim = ex.Animation.fromSpriteSheet(
   tileSpriteSheet,
   [74, 75],

@@ -1,6 +1,8 @@
 import * as ex from "excalibur";
 import { Resources, playerAnim, playerIdle } from "./resources";
 import { EnemyStatic } from "./enemies/EnemyStatic";
+import { NPC } from "./NPC";
+import { Ladder } from "./Ladder";
 
 export class Player extends ex.Actor {
   // constants
@@ -18,6 +20,9 @@ export class Player extends ex.Actor {
   hp: number = 3;
   heldItem: string = "torch";
   invulnerableTime: number = 0;
+  npcNearby: boolean = false;
+  ladderNearby: boolean = false;
+  onLadder: boolean = false;
 
   constructor(pos: ex.Vector) {
     super({
@@ -38,7 +43,9 @@ export class Player extends ex.Actor {
   }
 
   private updateGravity(delta: number): void {
-    this.vel.y += this.gravity * delta;
+    if (!this.onLadder) {
+      this.vel.y += this.gravity * delta;
+    }
   }
 
   private updateFriction(): void {
@@ -98,6 +105,32 @@ export class Player extends ex.Actor {
     });
   }
 
+  private checkNpcCollision(): void {
+    this.on("collisionstart", (e) => {
+      if (e.other instanceof NPC) {
+        this.npcNearby = true;
+      }
+    });
+    this.on("collisionend", (e) => {
+      if (e.other instanceof NPC) {
+        this.npcNearby = false;
+      }
+    });
+  }
+
+  private checkLadderCollision(): void {
+    this.on("collisionstart", (e) => {
+      if (e.other instanceof Ladder) {
+        this.ladderNearby = true;
+      }
+    });
+    this.on("collisionend", (e) => {
+      if (e.other instanceof Ladder) {
+        this.ladderNearby = false;
+      }
+    });
+  }
+
   private updateInvulnerableTime(delta: number): void {
     if (this.invulnerableTime > 0) {
       this.invulnerableTime -= delta;
@@ -126,7 +159,16 @@ export class Player extends ex.Actor {
     }
 
     if (engine.input.keyboard.wasPressed(ex.Keys.A)) {
-      this.interactWithInteractables(engine);
+      this.interactWithNpc(engine);
+    }
+
+    if (engine.input.keyboard.wasPressed(ex.Keys.Up) && this.ladderNearby) {
+      this.onLadder = true;
+      console.log("climbing ladder up");
+    }
+    if (engine.input.keyboard.wasPressed(ex.Keys.Down) && this.ladderNearby) {
+      this.onLadder = true;
+      console.log("climbing ladder down");
     }
   }
 
@@ -146,7 +188,11 @@ export class Player extends ex.Actor {
     }
   }
 
-  private interactWithInteractables(engine: ex.Engine): void {}
+  private interactWithNpc(engine: ex.Engine): void {
+    if (this.npcNearby) {
+      console.log("interacted with npc");
+    }
+  }
 
   onInitialize(engine: ex.Engine): void {}
 
@@ -170,6 +216,8 @@ export class Player extends ex.Actor {
 
     // collisions
     this.checkEnemyCollision();
+    this.checkNpcCollision();
+    this.checkLadderCollision();
     this.updateInvulnerableTime(delta);
   }
 }

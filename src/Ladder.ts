@@ -1,7 +1,7 @@
 import * as ex from "excalibur";
-import { npcAnim } from "./resources";
+import { ladderSprite } from "./resources";
 
-export class NPC extends ex.Actor {
+export class Ladder extends ex.Actor {
   constructor(pos: ex.Vector) {
     super({
       pos: pos,
@@ -11,6 +11,6 @@ export class NPC extends ex.Actor {
       collisionType: ex.CollisionType.Passive,
       anchor: ex.Vector.Zero,
     });
-    this.graphics.use(npcAnim);
+    this.graphics.use(ladderSprite);
   }
 }

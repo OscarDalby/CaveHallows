@@ -6,6 +6,7 @@ import { PauseMenu } from "./PauseMenu";
 import { UI } from "./UI";
 import { EnemyStatic } from "./enemies/EnemyStatic";
 import { NPC } from "./NPC";
+import { Ladder } from "./Ladder";
 
 let player: Player;
 let speechBubble: SpeechBubble;
@@ -13,6 +14,7 @@ let ui: UI;
 let pauseMenu: PauseMenu;
 let enemyStatic: EnemyStatic;
 let npc: NPC;
+let ladder: Ladder;
 
 export class Game extends ex.Engine {
   isPaused: boolean = false;
@@ -55,12 +57,14 @@ game.start(loader).then(() => {
   ui = new UI(game);
   enemyStatic = new EnemyStatic(new ex.Vector(60, 90));
   npc = new NPC(new ex.Vector(16, 80));
+  ladder = new Ladder(new ex.Vector(32, 80));
 
   Resources.TiledMap.addToScene(game.currentScene);
   game.add(player);
   game.add(speechBubble.actor);
   game.add(enemyStatic);
   game.add(npc);
+  game.add(ladder);
   speechBubble.setSpeech("Hello, World!");
 });
 
