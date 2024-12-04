@@ -24,6 +24,7 @@ export class Player extends ex.Actor {
       pos,
       width: 8,
       height: 8,
+      z: 99,
       collisionType: ex.CollisionType.Active,
     });
   }
@@ -119,6 +120,14 @@ export class Player extends ex.Actor {
     if (engine.input.keyboard.isHeld(ex.Keys.Right)) {
       this.vel.x += this.accMag;
     }
+
+    if (engine.input.keyboard.wasPressed(ex.Keys.S)) {
+      this.useHeldItem();
+    }
+
+    if (engine.input.keyboard.wasPressed(ex.Keys.A)) {
+      this.interactWithInteractables(engine);
+    }
   }
 
   private hurt(): void {
@@ -131,7 +140,15 @@ export class Player extends ex.Actor {
     }
   }
 
-  onInitialize(engine: ex.Engine<any>): void {}
+  private useHeldItem(): void {
+    if (this.heldItem === "torch") {
+      console.log("used torch");
+    }
+  }
+
+  private interactWithInteractables(engine: ex.Engine): void {}
+
+  onInitialize(engine: ex.Engine): void {}
 
   onPreUpdate(engine: ex.Engine, delta: number): void {}
 

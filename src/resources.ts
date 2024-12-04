@@ -56,6 +56,12 @@ export const playerIdle = ex.Animation.fromSpriteSheet(
   200,
 );
 
+export const npcAnim = ex.Animation.fromSpriteSheet(
+  tileSpriteSheet,
+  ex.range(192, 195),
+  200,
+);
+
 export const enemyStaticAnim = ex.Animation.fromSpriteSheet(
   tileSpriteSheet,
   [74, 75],

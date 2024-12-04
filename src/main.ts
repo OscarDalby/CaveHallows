@@ -5,12 +5,14 @@ import { SpeechBubble } from "./SpeechBubble";
 import { PauseMenu } from "./PauseMenu";
 import { UI } from "./UI";
 import { EnemyStatic } from "./enemies/EnemyStatic";
+import { NPC } from "./NPC";
 
 let player: Player;
 let speechBubble: SpeechBubble;
 let ui: UI;
 let pauseMenu: PauseMenu;
 let enemyStatic: EnemyStatic;
+let npc: NPC;
 
 export class Game extends ex.Engine {
   isPaused: boolean = false;
@@ -51,11 +53,14 @@ game.start(loader).then(() => {
   player = new Player(new ex.Vector(50, 50));
   speechBubble = new SpeechBubble();
   ui = new UI(game);
-  enemyStatic = new EnemyStatic(60, 90);
+  enemyStatic = new EnemyStatic(new ex.Vector(60, 90));
+  npc = new NPC(new ex.Vector(16, 80));
+
   Resources.TiledMap.addToScene(game.currentScene);
   game.add(player);
   game.add(speechBubble.actor);
   game.add(enemyStatic);
+  game.add(npc);
   speechBubble.setSpeech("Hello, World!");
 });
 
