@@ -1,28 +1,13 @@
-import { Resources } from "./resources";
+import { spriteFont } from "./resources";
 import * as ex from "excalibur";
 
 export class SpeechBubble {
   speech: string = "";
   pos: ex.Vector;
   maxLettersInLine: number = 26;
-  spriteSheet: ex.SpriteSheet = ex.SpriteSheet.fromImageSource({
-    image: Resources.SpriteFontImage,
-    grid: {
-      rows: 3,
-      columns: 16,
-      spriteWidth: 16,
-      spriteHeight: 16,
-    },
-  });
-  spriteFont: ex.SpriteFont = new ex.SpriteFont({
-    alphabet: "0123456789abcdefghijklmnopqrstuvwxyz,!'&.\"?-()+ ",
-    caseInsensitive: true,
-    spriteSheet: this.spriteSheet,
-    scale: new ex.Vector(0.3, 0.3),
-  });
   text: ex.Text = new ex.Text({
     text: this.speech,
-    font: this.spriteFont,
+    font: spriteFont,
   });
   actor: ex.Actor;
 

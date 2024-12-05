@@ -141,9 +141,6 @@ export class Player extends ex.Actor {
     }
   }
   private updateInput(engine: ex.Engine): void {
-    if (engine.input.keyboard.wasPressed(ex.Keys.H)) {
-      this.hurt();
-    }
     if (engine.input.keyboard.wasPressed(ex.Keys.D)) {
       this.jump();
     }

@@ -7,6 +7,7 @@ import { UI } from "./UI";
 import { EnemyStatic } from "./enemies/EnemyStatic";
 import { NPC } from "./NPC";
 import { Ladder } from "./Ladder";
+import { ControlsUI } from "./ControlsUI";
 
 let player: Player;
 let speechBubble: SpeechBubble;
@@ -15,9 +16,11 @@ let pauseMenu: PauseMenu;
 let enemyStatic: EnemyStatic;
 let npc: NPC;
 let ladder: Ladder;
+let controlsUI: ControlsUI;
 
 export class Game extends ex.Engine {
   isPaused: boolean = false;
+  controlsUIVisible: boolean = false;
   constructor() {
     super({
       width: 128,
@@ -41,11 +44,30 @@ export class Game extends ex.Engine {
       this.start(loader);
     }
   }
+
+  public toggleControlsUI() {
+    this.controlsUIVisible = !this.controlsUIVisible;
+    console.log("toggling controls ui");
+    if (this.controlsUIVisible) {
+      controlsUI.show();
+    } else {
+      controlsUI.hide();
+    }
+  }
 }
 
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     game.togglePause();
+  }
+  if (e.key === "h") {
+    controlsUI.show();
+  }
+});
+
+document.addEventListener("keyup", (e) => {
+  if (e.key === "h") {
+    controlsUI.hide();
   }
 });
 
@@ -58,6 +80,7 @@ game.start(loader).then(() => {
   enemyStatic = new EnemyStatic(new ex.Vector(60, 90));
   npc = new NPC(new ex.Vector(16, 80));
   ladder = new Ladder(new ex.Vector(32, 80));
+  controlsUI = new ControlsUI(160, 60);
 
   Resources.TiledMap.addToScene(game.currentScene);
   game.add(player);
@@ -65,6 +88,7 @@ game.start(loader).then(() => {
   game.add(enemyStatic);
   game.add(npc);
   game.add(ladder);
+  game.add(controlsUI.actor);
   speechBubble.setSpeech("Hello, World!");
 });
 

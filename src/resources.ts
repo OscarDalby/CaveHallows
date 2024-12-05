@@ -70,6 +70,23 @@ export const enemyStaticAnim = ex.Animation.fromSpriteSheet(
   100,
 );
 
+export const spriteSheet: ex.SpriteSheet = ex.SpriteSheet.fromImageSource({
+  image: Resources.SpriteFontImage,
+  grid: {
+    rows: 3,
+    columns: 16,
+    spriteWidth: 16,
+    spriteHeight: 16,
+  },
+});
+
+export const spriteFont: ex.SpriteFont = new ex.SpriteFont({
+  alphabet: "0123456789abcdefghijklmnopqrstuvwxyz,!'&.\"?-()+ ",
+  caseInsensitive: true,
+  spriteSheet: spriteSheet,
+  scale: new ex.Vector(0.3, 0.3),
+});
+
 export const loader = new ex.Loader();
 for (let resource of Object.values(Resources)) {
   loader.addResource(resource);
