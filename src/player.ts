@@ -1,5 +1,5 @@
 import * as ex from "excalibur";
-import { Resources, playerAnim, playerIdle } from "./resources";
+import { Resources, playerAnim, playerIdle, spriteFont } from "./resources";
 import { EnemyStatic } from "./enemies/EnemyStatic";
 import { NPC } from "./NPC";
 import { Ladder } from "./Ladder";
@@ -24,6 +24,9 @@ export class Player extends ex.Actor {
   ladderNearby: boolean = false;
   onLadder: boolean = false;
 
+  promptString: string;
+  promptText: ex.Text;
+  promptActor: ex.Actor;
   constructor(pos: ex.Vector) {
     super({
       pos,
@@ -32,6 +35,16 @@ export class Player extends ex.Actor {
       z: 99,
       collisionType: ex.CollisionType.Active,
     });
+
+    this.promptText = new ex.Text({
+      text: "",
+      font: spriteFont,
+    });
+    this.promptActor = new ex.Actor({
+      pos: pos.add(new ex.Vector(10, 30)),
+      anchor: ex.Vector.Zero,
+    });
+    this.promptActor.graphics.use(this.promptText);
   }
 
   private resetPosition(engine: ex.Engine): void {
@@ -140,6 +153,24 @@ export class Player extends ex.Actor {
       }
     }
   }
+
+  public showPrompt() {
+    this.promptActor.graphics.opacity = 1;
+  }
+  public hidePrompt() {
+    this.promptActor.graphics.opacity = 0;
+  }
+  public updatePrompt() {
+    if (this.npcNearby) {
+      this.promptString = "Press A to talk";
+      this.promptText.text = this.promptString;
+      this.promptActor.graphics.use(this.promptText);
+      this.showPrompt();
+    } else {
+      this.hidePrompt();
+    }
+  }
+
   private updateInput(engine: ex.Engine): void {
     if (engine.input.keyboard.wasPressed(ex.Keys.D)) {
       this.jump();
@@ -193,15 +224,13 @@ export class Player extends ex.Actor {
     }
   }
 
-  onInitialize(engine: ex.Engine): void {}
+  onInitialize(engine: ex.Engine): void { }
 
-  onPreUpdate(engine: ex.Engine, delta: number): void {}
+  onPreUpdate(engine: ex.Engine, delta: number): void { }
 
   update(engine: ex.Engine, delta: number): void {
     // debug functions & logs
     this.resetPosition(engine);
-    //console.log("this.vel.y", this.vel.y);
-    //console.log("this.vel.x", this.vel.x);
 
     // check player states
     this.checkMoving();
@@ -216,6 +245,7 @@ export class Player extends ex.Actor {
     // collisions
     this.checkEnemyCollision();
     this.checkNpcCollision();
+    this.updatePrompt();
     this.checkLadderCollision();
     this.updateInvulnerableTime(delta);
   }

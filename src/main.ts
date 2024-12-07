@@ -47,7 +47,6 @@ export class Game extends ex.Engine {
 
   public toggleControlsUI() {
     this.controlsUIVisible = !this.controlsUIVisible;
-    console.log("toggling controls ui");
     if (this.controlsUIVisible) {
       controlsUI.show();
     } else {
@@ -78,12 +77,13 @@ game.start(loader).then(() => {
   speechBubble = new SpeechBubble();
   ui = new UI(game);
   enemyStatic = new EnemyStatic(new ex.Vector(60, 90));
-  npc = new NPC(new ex.Vector(16, 80));
+  npc = new NPC(new ex.Vector(16, 80), game);
   ladder = new Ladder(new ex.Vector(32, 80));
   controlsUI = new ControlsUI(160, 60);
 
   Resources.TiledMap.addToScene(game.currentScene);
   game.add(player);
+  game.add(player.promptActor);
   game.add(speechBubble.actor);
   game.add(enemyStatic);
   game.add(npc);

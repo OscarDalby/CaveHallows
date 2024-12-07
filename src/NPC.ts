@@ -1,8 +1,10 @@
 import * as ex from "excalibur";
-import { npcAnim } from "./resources";
+import { npcAnim, spriteFont } from "./resources";
+import { Player } from "./player";
 
 export class NPC extends ex.Actor {
-  constructor(pos: ex.Vector) {
+  playerNearby: boolean = false;
+  constructor(pos: ex.Vector, game: ex.Engine) {
     super({
       pos: pos,
       width: 8,
@@ -12,5 +14,21 @@ export class NPC extends ex.Actor {
       anchor: ex.Vector.Zero,
     });
     this.graphics.use(npcAnim);
+  }
+
+  private checkNpcCollision(): void {
+    this.on("collisionstart", (e) => {
+      if (e.other instanceof Player) {
+        this.playerNearby = true;
+      }
+    });
+    this.on("collisionend", (e) => {
+      if (e.other instanceof Player) {
+        this.playerNearby = false;
+      }
+    });
+  }
+  public update(game: ex.Engine): void {
+    this.checkNpcCollision();
   }
 }

@@ -20,11 +20,9 @@ export class ControlsUI {
   }
 
   public show(): void {
-    console.log("showing controls");
     this.actor.graphics.opacity = 1;
   }
   public hide(): void {
-    console.log("hiding controls");
     this.actor.graphics.opacity = 0;
   }
 }
