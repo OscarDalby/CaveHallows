@@ -24,7 +24,6 @@ export class Player extends ex.Actor {
   ladderNearby: boolean = false;
   onLadder: boolean = false;
 
-  promptString: string;
   promptText: ex.Text;
   promptActor: ex.Actor;
   constructor(pos: ex.Vector) {
@@ -162,8 +161,7 @@ export class Player extends ex.Actor {
   }
   public updatePrompt() {
     if (this.npcNearby) {
-      this.promptString = "Press A to talk";
-      this.promptText.text = this.promptString;
+      this.promptText.text = "Press A to talk";
       this.promptActor.graphics.use(this.promptText);
       this.showPrompt();
     } else {
@@ -224,9 +222,9 @@ export class Player extends ex.Actor {
     }
   }
 
-  onInitialize(engine: ex.Engine): void { }
+  onInitialize(engine: ex.Engine): void {}
 
-  onPreUpdate(engine: ex.Engine, delta: number): void { }
+  onPreUpdate(engine: ex.Engine, delta: number): void {}
 
   update(engine: ex.Engine, delta: number): void {
     // debug functions & logs
