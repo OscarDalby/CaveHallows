@@ -4,7 +4,7 @@ import { Player } from "./player";
 
 export class NPC extends ex.Actor {
   playerNearby: boolean = false;
-  constructor(pos: ex.Vector, game: ex.Engine) {
+  constructor(game: ex.Engine, pos: ex.Vector, name: string) {
     super({
       pos: pos,
       width: 8,
@@ -14,6 +14,7 @@ export class NPC extends ex.Actor {
       anchor: ex.Vector.Zero,
     });
     this.graphics.use(npcAnim);
+    this.name = name;
   }
 
   private checkNpcCollision(): void {

@@ -73,11 +73,11 @@ document.addEventListener("keyup", (e) => {
 const game = new Game();
 
 game.start(loader).then(() => {
-  player = new Player(new ex.Vector(50, 50));
   speechBubble = new SpeechBubble();
+  player = new Player(new ex.Vector(50, 50), speechBubble);
   ui = new UI(game);
   enemyStatic = new EnemyStatic(new ex.Vector(60, 90));
-  npc = new NPC(new ex.Vector(16, 80), game);
+  npc = new NPC(game, new ex.Vector(16, 80), "greeter");
   ladder = new Ladder(new ex.Vector(32, 80));
   controlsUI = new ControlsUI(160, 60);
 
@@ -85,11 +85,13 @@ game.start(loader).then(() => {
   game.add(player);
   game.add(player.promptActor);
   game.add(speechBubble.actor);
+  for (let bubbleActor of speechBubble.bubbleActors) {
+    game.add(bubbleActor);
+  }
   game.add(enemyStatic);
   game.add(npc);
   game.add(ladder);
   game.add(controlsUI.actor);
-  speechBubble.setSpeech("Hello, World!");
 });
 
 game.onPreUpdate = (engine: ex.Engine, delta: number) => {

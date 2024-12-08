@@ -3,8 +3,10 @@ import { Resources, playerAnim, playerIdle, spriteFont } from "./resources";
 import { EnemyStatic } from "./enemies/EnemyStatic";
 import { NPC } from "./NPC";
 import { Ladder } from "./Ladder";
+import { SpeechBubble } from "./SpeechBubble";
 
 export class Player extends ex.Actor {
+  speechBubble: SpeechBubble;
   // constants
   gravity: number = 1;
   accMag: number = 4;
@@ -26,7 +28,7 @@ export class Player extends ex.Actor {
 
   promptText: ex.Text;
   promptActor: ex.Actor;
-  constructor(pos: ex.Vector) {
+  constructor(pos: ex.Vector, speechBubble: SpeechBubble) {
     super({
       pos,
       width: 8,
@@ -34,13 +36,14 @@ export class Player extends ex.Actor {
       z: 99,
       collisionType: ex.CollisionType.Active,
     });
+    this.speechBubble = speechBubble;
 
     this.promptText = new ex.Text({
       text: "",
       font: spriteFont,
     });
     this.promptActor = new ex.Actor({
-      pos: pos.add(new ex.Vector(10, 30)),
+      pos: pos.add(new ex.Vector(-25, -25)),
       anchor: ex.Vector.Zero,
     });
     this.promptActor.graphics.use(this.promptText);
@@ -153,19 +156,13 @@ export class Player extends ex.Actor {
     }
   }
 
-  public showPrompt() {
-    this.promptActor.graphics.opacity = 1;
-  }
-  public hidePrompt() {
-    this.promptActor.graphics.opacity = 0;
-  }
   public updatePrompt() {
     if (this.npcNearby) {
       this.promptText.text = "Press A to talk";
       this.promptActor.graphics.use(this.promptText);
-      this.showPrompt();
+      this.promptActor.graphics.opacity = 1;
     } else {
-      this.hidePrompt();
+      this.promptActor.graphics.opacity = 0;
     }
   }
 
@@ -185,7 +182,7 @@ export class Player extends ex.Actor {
     }
 
     if (engine.input.keyboard.wasPressed(ex.Keys.A)) {
-      this.interactWithNpc(engine);
+      this.interactWithNpc();
     }
 
     if (engine.input.keyboard.wasPressed(ex.Keys.Up) && this.ladderNearby) {
@@ -216,9 +213,9 @@ export class Player extends ex.Actor {
     }
   }
 
-  private interactWithNpc(engine: ex.Engine): void {
+  private interactWithNpc(): void {
     if (this.npcNearby) {
-      console.log("interacted with npc");
+      this.speechBubble.setSpeech("Hello, World!");
     }
   }
 
