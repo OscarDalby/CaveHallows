@@ -85,9 +85,7 @@ game.start(loader).then(() => {
   game.add(player);
   game.add(player.promptActor);
   game.add(speechBubble.actor);
-  for (let bubbleActor of speechBubble.bubbleActors) {
-    game.add(bubbleActor);
-  }
+  game.add(speechBubble.bubbleGroupActor);
   game.add(enemyStatic);
   game.add(npc);
   game.add(ladder);

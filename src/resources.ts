@@ -58,7 +58,7 @@ const playerSpriteSheet = ex.SpriteSheet.fromImageSource({
 
 export const playerAnim = ex.Animation.fromSpriteSheet(
   playerSpriteSheet,
-  ex.range(1, 6),
+  ex.range(1, 5),
   100,
 );
 

@@ -22,7 +22,155 @@ export class SpeechBubble {
   bubbleBottom: ex.Actor;
   bubbleLeft: ex.Actor;
   bubbleRight: ex.Actor;
-  bubbleActors: ex.Actor[];
+
+  // Bubble GraphicsGroup
+  bubbleGraphicsGroup: ex.GraphicsGroup = new ex.GraphicsGroup({
+    useAnchor: false,
+    members: [
+      {
+        // Top left
+        graphic: opaqueTileSpriteSheet.getSprite(10, 0),
+        offset: ex.vec(0, 0),
+      },
+      {
+        // Top 1
+        graphic: opaqueTileSpriteSheet.getSprite(11, 0),
+        offset: ex.vec(8, 0),
+      },
+      {
+        // Top 2
+        graphic: opaqueTileSpriteSheet.getSprite(11, 0),
+        offset: ex.vec(16, 0),
+      },
+      {
+        // Top 3
+        graphic: opaqueTileSpriteSheet.getSprite(11, 0),
+        offset: ex.vec(24, 0),
+      },
+      {
+        // Top 4
+        graphic: opaqueTileSpriteSheet.getSprite(11, 0),
+        offset: ex.vec(32, 0),
+      },
+      {
+        // Top 5
+        graphic: opaqueTileSpriteSheet.getSprite(11, 0),
+        offset: ex.vec(40, 0),
+      },
+      {
+        // Top 6
+        graphic: opaqueTileSpriteSheet.getSprite(11, 0),
+        offset: ex.vec(48, 0),
+      },
+      {
+        // Top 7
+        graphic: opaqueTileSpriteSheet.getSprite(11, 0),
+        offset: ex.vec(56, 0),
+      },
+      {
+        // Top 8
+        graphic: opaqueTileSpriteSheet.getSprite(11, 0),
+        offset: ex.vec(64, 0),
+      },
+      {
+        // Top 9
+        graphic: opaqueTileSpriteSheet.getSprite(11, 0),
+        offset: ex.vec(72, 0),
+      },
+      {
+        // Top 10
+        graphic: opaqueTileSpriteSheet.getSprite(11, 0),
+        offset: ex.vec(80, 0),
+      },
+      {
+        // Top right
+        graphic: opaqueTileSpriteSheet.getSprite(12, 0),
+        offset: ex.vec(88, 0),
+      },
+      {
+        // Right 1
+        graphic: opaqueTileSpriteSheet.getSprite(12, 1),
+        offset: ex.vec(88, 8),
+      },
+      {
+        // Right 2
+        graphic: opaqueTileSpriteSheet.getSprite(12, 1),
+        offset: ex.vec(88, 16),
+      },
+      {
+        // Bottom right
+        graphic: opaqueTileSpriteSheet.getSprite(12, 2),
+        offset: ex.vec(88, 24),
+      },
+      {
+        // Bottom 1
+        graphic: opaqueTileSpriteSheet.getSprite(11, 2),
+        offset: ex.vec(80, 24),
+      },
+      {
+        // Bottom 2
+        graphic: opaqueTileSpriteSheet.getSprite(11, 2),
+        offset: ex.vec(72, 24),
+      },
+      {
+        // Bottom 3
+        graphic: opaqueTileSpriteSheet.getSprite(11, 2),
+        offset: ex.vec(64, 24),
+      },
+      {
+        // Bottom 4
+        graphic: opaqueTileSpriteSheet.getSprite(11, 2),
+        offset: ex.vec(56, 24),
+      },
+      {
+        // Bottom 5
+        graphic: opaqueTileSpriteSheet.getSprite(11, 2),
+        offset: ex.vec(48, 24),
+      },
+      {
+        // Bottom 6
+        graphic: opaqueTileSpriteSheet.getSprite(11, 2),
+        offset: ex.vec(40, 24),
+      },
+      {
+        // Bottom 7
+        graphic: opaqueTileSpriteSheet.getSprite(11, 2),
+        offset: ex.vec(32, 24),
+      },
+      {
+        // Bottom 8
+        graphic: opaqueTileSpriteSheet.getSprite(11, 2),
+        offset: ex.vec(24, 24),
+      },
+      {
+        // Bottom 9
+        graphic: opaqueTileSpriteSheet.getSprite(11, 2),
+        offset: ex.vec(16, 24),
+      },
+      {
+        // Bottom 10
+        graphic: opaqueTileSpriteSheet.getSprite(11, 2),
+        offset: ex.vec(8, 24),
+      },
+      {
+        // Bottom left
+        graphic: opaqueTileSpriteSheet.getSprite(10, 2),
+        offset: ex.vec(0, 24),
+      },
+      {
+        // Left 1
+        graphic: opaqueTileSpriteSheet.getSprite(10, 1),
+        offset: ex.vec(0, 16),
+      },
+      {
+        // Left 2
+        graphic: opaqueTileSpriteSheet.getSprite(10, 1),
+        offset: ex.vec(0, 8),
+      },
+    ],
+  });
+
+  bubbleGroupActor: ex.Actor = new ex.Actor({ pos: ex.vec(64, 104), z: 99 });
 
   constructor(x: number = 120, y: number = 120) {
     this.pos = ex.vec(x, y);
@@ -32,56 +180,8 @@ export class SpeechBubble {
     });
     this.actor.graphics.use(this.text);
     // Bubble actors
-    this.bubbleTopLeft = new ex.Actor({
-      pos: ex.vec(this.bubbleTopLeftX, this.bubbleTopLeftY),
-      z: 99,
-    });
-    this.bubbleTopLeft.graphics.use(opaqueTileSpriteSheet.getSprite(10, 0));
-    this.bubbleTop = new ex.Actor({
-      pos: ex.vec(this.bubbleTopLeftX + 8, this.bubbleTopLeftY),
-      z: 99,
-    });
-    this.bubbleTop.graphics.use(opaqueTileSpriteSheet.getSprite(11, 0));
-    this.bubbleTopRight = new ex.Actor({
-      pos: ex.vec(this.bubbleTopLeftX + 16, this.bubbleTopLeftY),
-      z: 99,
-    });
-    this.bubbleTopRight.graphics.use(opaqueTileSpriteSheet.getSprite(12, 0));
-    this.bubbleRight = new ex.Actor({
-      pos: ex.vec(this.bubbleTopLeftX + 16, this.bubbleTopLeftY + 8),
-      z: 99,
-    });
-    this.bubbleRight.graphics.use(opaqueTileSpriteSheet.getSprite(12, 1));
-    this.bubbleBottomRight = new ex.Actor({
-      pos: ex.vec(this.bubbleTopLeftX + 16, this.bubbleTopLeftY + 16),
-      z: 99,
-    });
-    this.bubbleBottomRight.graphics.use(opaqueTileSpriteSheet.getSprite(12, 2));
-    this.bubbleBottom = new ex.Actor({
-      pos: ex.vec(this.bubbleTopLeftX + 8, this.bubbleTopLeftY + 16),
-      z: 99,
-    });
-    this.bubbleBottom.graphics.use(opaqueTileSpriteSheet.getSprite(11, 2));
-    this.bubbleBottomLeft = new ex.Actor({
-      pos: ex.vec(this.bubbleTopLeftX, this.bubbleTopLeftY + 16),
-      z: 99,
-    });
-    this.bubbleBottomLeft.graphics.use(opaqueTileSpriteSheet.getSprite(10, 2));
-    this.bubbleLeft = new ex.Actor({
-      pos: ex.vec(this.bubbleTopLeftX, this.bubbleTopLeftY + 8),
-      z: 99,
-    });
-    this.bubbleLeft.graphics.use(opaqueTileSpriteSheet.getSprite(10, 1));
-    this.bubbleActors = [
-      this.bubbleTopLeft,
-      this.bubbleTop,
-      this.bubbleTopRight,
-      this.bubbleRight,
-      this.bubbleBottomRight,
-      this.bubbleBottom,
-      this.bubbleBottomLeft,
-      this.bubbleLeft,
-    ];
+
+    this.bubbleGroupActor.graphics.use(this.bubbleGraphicsGroup);
   }
 
   private processText = (text: string): string => {
