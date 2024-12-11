@@ -11,18 +11,18 @@ export class SpeechBubble {
   });
   actor: ex.Actor;
 
-  // Bubble actors
-  bubbleTopLeftX: number = 10;
-  bubbleTopLeftY: number = 80;
-  bubbleTopLeft: ex.Actor;
-  bubbleTopRight: ex.Actor;
-  bubbleBottomLeft: ex.Actor;
-  bubbleBottomRight: ex.Actor;
-  bubbleTop: ex.Actor;
-  bubbleBottom: ex.Actor;
-  bubbleLeft: ex.Actor;
-  bubbleRight: ex.Actor;
+  // Bubble pos
+  bubbleTopLeftX: number = 64;
+  bubbleTopLeftY: number = 108;
 
+  // Bubble background
+  bubbleBackgroundActor: ex.Actor = new ex.Actor({
+    pos: ex.vec(this.bubbleTopLeftX, this.bubbleTopLeftY),
+    z: 98,
+    width: 96,
+    height: 32,
+    color: ex.Color.White,
+  });
   // Bubble GraphicsGroup
   bubbleGraphicsGroup: ex.GraphicsGroup = new ex.GraphicsGroup({
     useAnchor: false,
@@ -170,10 +170,13 @@ export class SpeechBubble {
     ],
   });
 
-  bubbleGroupActor: ex.Actor = new ex.Actor({ pos: ex.vec(64, 104), z: 99 });
+  bubbleGroupActor: ex.Actor = new ex.Actor({
+    pos: ex.vec(this.bubbleTopLeftX, this.bubbleTopLeftY),
+    z: 99,
+  });
 
-  constructor(x: number = 120, y: number = 120) {
-    this.pos = ex.vec(x, y);
+  constructor() {
+    this.pos = ex.vec(120, 120);
     this.actor = new ex.Actor({
       pos: this.pos,
       z: 100,

@@ -84,8 +84,9 @@ game.start(loader).then(() => {
   Resources.TiledMap.addToScene(game.currentScene);
   game.add(player);
   game.add(player.promptActor);
-  game.add(speechBubble.actor);
+  game.add(speechBubble.bubbleBackgroundActor);
   game.add(speechBubble.bubbleGroupActor);
+  game.add(speechBubble.actor);
   game.add(enemyStatic);
   game.add(npc);
   game.add(ladder);

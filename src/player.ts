@@ -33,7 +33,7 @@ export class Player extends ex.Actor {
       pos,
       width: 8,
       height: 8,
-      z: 99,
+      z: 90,
       collisionType: ex.CollisionType.Active,
     });
     this.speechBubble = speechBubble;
