@@ -1,6 +1,6 @@
 import * as ex from "excalibur";
 import { npcAnim, spriteFont } from "./resources";
-import { Player } from "./player";
+import { Player } from "./Player";
 
 export class NPC extends ex.Actor {
   playerNearby: boolean = false;

@@ -23,6 +23,8 @@ export class Player extends ex.Actor {
   heldItem: string = "torch";
   invulnerableTime: number = 0;
   npcNearby: boolean = false;
+  inConversation: boolean = false;
+  canMove: boolean = true;
   ladderNearby: boolean = false;
   onLadder: boolean = false;
 
@@ -181,10 +183,6 @@ export class Player extends ex.Actor {
       this.useHeldItem();
     }
 
-    if (engine.input.keyboard.wasPressed(ex.Keys.A)) {
-      this.interactWithNpc();
-    }
-
     if (engine.input.keyboard.wasPressed(ex.Keys.Up) && this.ladderNearby) {
       this.onLadder = true;
       this.vel.y = -10;
@@ -194,6 +192,12 @@ export class Player extends ex.Actor {
     if (engine.input.keyboard.wasPressed(ex.Keys.Down) && this.ladderNearby) {
       this.onLadder = true;
       this.vel.y = 10;
+    }
+  }
+
+  private updateInteractions(engine: ex.Engine): void {
+    if (engine.input.keyboard.wasPressed(ex.Keys.A)) {
+      this.interactWithNpc();
     }
   }
 
@@ -214,8 +218,15 @@ export class Player extends ex.Actor {
   }
 
   private interactWithNpc(): void {
-    if (this.npcNearby) {
-      this.speechBubble.setSpeech("Hello, World!");
+    if (this.npcNearby && !this.inConversation) {
+      console.log("loading speeches");
+      this.speechBubble.loadSpeeches([
+        "Hello!",
+        "How are you?",
+        "I'm fine, thank you!",
+      ]);
+      this.inConversation = true;
+      this.canMove = false;
     }
   }
 
@@ -231,11 +242,14 @@ export class Player extends ex.Actor {
     this.checkMoving();
     this.checkDirection();
     this.checkIfGrounded();
+    this.updateInteractions(engine);
 
     // physics and movement logic
     this.updateGravity(delta);
     this.updateFriction();
-    this.updateInput(engine);
+    if (this.canMove) {
+      this.updateInput(engine);
+    }
 
     // collisions
     this.checkEnemyCollision();

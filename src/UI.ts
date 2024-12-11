@@ -1,6 +1,6 @@
 import * as ex from "excalibur";
 import { tileSpriteSheet } from "./resources";
-import { Player } from "./player";
+import { Player } from "./Player";
 
 export class UI {
   numHearts: number = 3;

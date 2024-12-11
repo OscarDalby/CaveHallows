@@ -1,6 +1,6 @@
 import * as ex from "excalibur";
 import { Resources, loader } from "./resources";
-import { Player } from "./player";
+import { Player } from "./Player";
 import { SpeechBubble } from "./SpeechBubble";
 import { PauseMenu } from "./PauseMenu";
 import { UI } from "./UI";
@@ -86,7 +86,7 @@ game.start(loader).then(() => {
   game.add(player.promptActor);
   game.add(speechBubble.bubbleBackgroundActor);
   game.add(speechBubble.bubbleGroupActor);
-  game.add(speechBubble.actor);
+  game.add(speechBubble.textActor);
   game.add(enemyStatic);
   game.add(npc);
   game.add(ladder);
@@ -95,4 +95,5 @@ game.start(loader).then(() => {
 
 game.onPreUpdate = (engine: ex.Engine, delta: number) => {
   ui.update(game, player);
+  speechBubble.update(game, player);
 };

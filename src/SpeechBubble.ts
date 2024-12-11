@@ -1,19 +1,22 @@
+import { Player } from "./Player";
 import { spriteFont, opaqueTileSpriteSheet } from "./resources";
 import * as ex from "excalibur";
 
 export class SpeechBubble {
   speech: string = "";
-  pos: ex.Vector;
-  maxLettersInLine: number = 26;
+  maxLettersInLine: number = 19;
   text: ex.Text = new ex.Text({
     text: this.speech,
     font: spriteFont,
   });
-  actor: ex.Actor;
+  textActor: ex.Actor;
+
+  speechIndex: number = 0;
+  loadedSpeeches: string[] = [];
 
   // Bubble pos
-  bubbleTopLeftX: number = 64;
-  bubbleTopLeftY: number = 108;
+  bubbleTopLeftX: number = 16;
+  bubbleTopLeftY: number = 92;
 
   // Bubble background
   bubbleBackgroundActor: ex.Actor = new ex.Actor({
@@ -21,11 +24,10 @@ export class SpeechBubble {
     z: 98,
     width: 96,
     height: 32,
-    color: ex.Color.White,
+    color: ex.Color.fromHex("#000000"),
   });
   // Bubble GraphicsGroup
   bubbleGraphicsGroup: ex.GraphicsGroup = new ex.GraphicsGroup({
-    useAnchor: false,
     members: [
       {
         // Top left
@@ -176,49 +178,90 @@ export class SpeechBubble {
   });
 
   constructor() {
-    this.pos = ex.vec(120, 120);
-    this.actor = new ex.Actor({
-      pos: this.pos,
+    this.textActor = new ex.Actor({
+      pos: new ex.Vector(this.bubbleTopLeftX + 4, this.bubbleTopLeftY + 4),
       z: 100,
     });
-    this.actor.graphics.use(this.text);
-    // Bubble actors
+    this.textActor.anchor = ex.vec(0, 0);
+    this.bubbleBackgroundActor.anchor = ex.vec(0, 0);
+    this.bubbleGroupActor.anchor = ex.vec(0, 0);
+    this.textActor.graphics.use(this.text);
 
     this.bubbleGroupActor.graphics.use(this.bubbleGraphicsGroup);
   }
 
   private processText = (text: string): string => {
-    let result = [];
+    let result: string[] = [];
     while (text.length > 0) {
       if (text.length <= this.maxLettersInLine) {
         result.push(text);
         break;
       }
-      let lastSpace = text.substring(0, this.maxLettersInLine).lastIndexOf(" ");
+
+      let chunk = text.substring(0, this.maxLettersInLine);
+      let lastSpace = chunk.lastIndexOf(" ");
+
       if (lastSpace === -1) {
-        lastSpace = this.maxLettersInLine;
+        result.push(chunk);
+        text = text.substring(this.maxLettersInLine);
+      } else {
+        result.push(text.substring(0, lastSpace));
+        text = text.substring(lastSpace + 1);
       }
-      result.push(text.substring(0, lastSpace));
-      text = text.substring(lastSpace + 1);
     }
-    return result.join("\n");
+    const output = result.join("\n");
+    return output;
   };
 
-  public show(): void {
-    this.actor.graphics.opacity = 1;
+  private show(): void {
+    this.textActor.graphics.opacity = 1;
+    this.bubbleBackgroundActor.graphics.opacity = 1;
+    this.bubbleGroupActor.graphics.opacity = 1;
   }
 
-  public hide(): void {
-    this.actor.graphics.opacity = 0;
+  private hide(): void {
+    this.textActor.graphics.opacity = 0;
+    this.bubbleBackgroundActor.graphics.opacity = 0;
+    this.bubbleGroupActor.graphics.opacity = 0;
   }
 
-  public setSpeech(speech: string): void {
+  private setSpeech(speech: string): void {
     this.speech = this.processText(speech);
     this.text.text = this.speech;
+    this.textActor.graphics.use(this.text);
+  }
+  public loadSpeeches(speeches: string[]): void {
+    this.loadedSpeeches = speeches;
+    this.speechIndex = 0;
   }
 
-  public setPosition(x: number, y: number): void {
-    this.pos = ex.vec(x, y);
-    this.actor.pos = this.pos;
+  private beginConversation(): void {
+    this.show();
+    if (this.speechIndex >= this.loadedSpeeches.length) {
+      this.hide();
+      return;
+    }
+    this.setSpeech(this.loadedSpeeches[this.speechIndex]);
+  }
+
+  private incrementConversation(game: ex.Engine): void {
+    if (game.input.keyboard.wasPressed(ex.Keys.A)) {
+      console.log("incrementing conversation");
+      this.speechIndex++;
+    }
+  }
+
+  update(game: ex.Engine, player: Player): void {
+    if (this.loadSpeeches.length > 0) {
+      this.beginConversation();
+      this.incrementConversation(game);
+      if (this.speechIndex >= this.loadedSpeeches.length) {
+        this.hide();
+        player.canMove = true;
+      }
+      if (this.speechIndex > this.loadedSpeeches.length) {
+        player.inConversation = false;
+      }
+    }
   }
 }
