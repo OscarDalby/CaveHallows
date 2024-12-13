@@ -17,12 +17,14 @@ export class Prompt {
   }
 
   public update(player: Player) {
+    // set up this way for more flexibility when adding more prompts
     if (player.npcNearby) {
-      console.log("npc nearby in prompt");
       this.text.text = "Press A to talk";
+    }
+
+    if (player.npcNearby) {
       const textWidth = 8 * this.text.text.length;
       this.actor.pos = player.pos.add(new ex.Vector(-textWidth / 2 + 16, -16));
-      // clamp to screen
       this.actor.pos.x = Math.min(
         128 - textWidth,
         Math.max(0, this.actor.pos.x),

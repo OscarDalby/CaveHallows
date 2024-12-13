@@ -9,6 +9,9 @@ import { NPC } from "./NPC";
 import { Ladder } from "./Ladder";
 import { ControlsUI } from "./ControlsUI";
 import { Prompt } from "./Prompt";
+import { SceneManager } from "./SceneManager";
+
+let sceneManager: SceneManager;
 
 let player: Player;
 let speechBubble: SpeechBubble;
@@ -75,6 +78,8 @@ document.addEventListener("keyup", (e) => {
 const game = new Game();
 
 game.start(loader).then(() => {
+  sceneManager = new SceneManager();
+
   speechBubble = new SpeechBubble();
   player = new Player(new ex.Vector(8, 0), speechBubble);
   ui = new UI(game);
@@ -97,6 +102,7 @@ game.start(loader).then(() => {
 });
 
 game.onPreUpdate = (engine: ex.Engine, delta: number) => {
+  sceneManager.update(game, player);
   ui.update(game, player);
   speechBubble.update(game, player);
   prompt.update(player);
