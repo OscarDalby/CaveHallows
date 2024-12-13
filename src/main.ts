@@ -8,6 +8,7 @@ import { EnemyStatic } from "./enemies/EnemyStatic";
 import { NPC } from "./NPC";
 import { Ladder } from "./Ladder";
 import { ControlsUI } from "./ControlsUI";
+import { Prompt } from "./Prompt";
 
 let player: Player;
 let speechBubble: SpeechBubble;
@@ -17,6 +18,7 @@ let enemyStatic: EnemyStatic;
 let npc: NPC;
 let ladder: Ladder;
 let controlsUI: ControlsUI;
+let prompt: Prompt;
 
 export class Game extends ex.Engine {
   isPaused: boolean = false;
@@ -48,9 +50,9 @@ export class Game extends ex.Engine {
   public toggleControlsUI() {
     this.controlsUIVisible = !this.controlsUIVisible;
     if (this.controlsUIVisible) {
-      controlsUI.show();
+      controlsUI.show(true);
     } else {
-      controlsUI.hide();
+      controlsUI.show(false);
     }
   }
 }
@@ -60,13 +62,13 @@ document.addEventListener("keydown", (e) => {
     game.togglePause();
   }
   if (e.key === "h") {
-    controlsUI.show();
+    controlsUI.show(true);
   }
 });
 
 document.addEventListener("keyup", (e) => {
   if (e.key === "h") {
-    controlsUI.hide();
+    controlsUI.show(false);
   }
 });
 
@@ -74,16 +76,16 @@ const game = new Game();
 
 game.start(loader).then(() => {
   speechBubble = new SpeechBubble();
-  player = new Player(new ex.Vector(50, 50), speechBubble);
+  player = new Player(new ex.Vector(8, 0), speechBubble);
   ui = new UI(game);
   enemyStatic = new EnemyStatic(new ex.Vector(60, 90));
   npc = new NPC(game, new ex.Vector(16, 80), "greeter");
   ladder = new Ladder(new ex.Vector(32, 80));
   controlsUI = new ControlsUI(160, 60);
+  prompt = new Prompt();
 
   Resources.TiledMap.addToScene(game.currentScene);
   game.add(player);
-  game.add(player.promptActor);
   game.add(speechBubble.bubbleBackgroundActor);
   game.add(speechBubble.bubbleGroupActor);
   game.add(speechBubble.textActor);
@@ -91,9 +93,11 @@ game.start(loader).then(() => {
   game.add(npc);
   game.add(ladder);
   game.add(controlsUI.actor);
+  game.add(prompt.actor);
 });
 
 game.onPreUpdate = (engine: ex.Engine, delta: number) => {
   ui.update(game, player);
   speechBubble.update(game, player);
+  prompt.update(player);
 };

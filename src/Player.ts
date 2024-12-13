@@ -28,8 +28,6 @@ export class Player extends ex.Actor {
   ladderNearby: boolean = false;
   onLadder: boolean = false;
 
-  promptText: ex.Text;
-  promptActor: ex.Actor;
   constructor(pos: ex.Vector, speechBubble: SpeechBubble) {
     super({
       pos,
@@ -39,21 +37,11 @@ export class Player extends ex.Actor {
       collisionType: ex.CollisionType.Active,
     });
     this.speechBubble = speechBubble;
-
-    this.promptText = new ex.Text({
-      text: "",
-      font: spriteFont,
-    });
-    this.promptActor = new ex.Actor({
-      pos: pos.add(new ex.Vector(-25, -25)),
-      anchor: ex.Vector.Zero,
-    });
-    this.promptActor.graphics.use(this.promptText);
   }
 
   private resetPosition(engine: ex.Engine): void {
     if (engine.input.keyboard.isHeld(ex.Keys.R)) {
-      this.pos = new ex.Vector(9, 0);
+      this.pos = new ex.Vector(8, 0);
       this.vel = new ex.Vector(0, 0);
       this.hp = this.maxHp;
     }
@@ -158,16 +146,6 @@ export class Player extends ex.Actor {
     }
   }
 
-  public updatePrompt() {
-    if (this.npcNearby) {
-      this.promptText.text = "Press A to talk";
-      this.promptActor.graphics.use(this.promptText);
-      this.promptActor.graphics.opacity = 1;
-    } else {
-      this.promptActor.graphics.opacity = 0;
-    }
-  }
-
   private updateInput(engine: ex.Engine): void {
     if (engine.input.keyboard.wasPressed(ex.Keys.D)) {
       this.jump();
@@ -219,12 +197,7 @@ export class Player extends ex.Actor {
 
   private interactWithNpc(): void {
     if (this.npcNearby && !this.inConversation) {
-      console.log("loading speeches");
-      this.speechBubble.loadSpeeches([
-        "Hello!",
-        "How are you?",
-        "I'm fine, thank you!",
-      ]);
+      this.speechBubble.loadSpeeches();
       this.inConversation = true;
       this.canMove = false;
     }
@@ -254,7 +227,6 @@ export class Player extends ex.Actor {
     // collisions
     this.checkEnemyCollision();
     this.checkNpcCollision();
-    this.updatePrompt();
     this.checkLadderCollision();
     this.updateInvulnerableTime(delta);
   }

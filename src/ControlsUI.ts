@@ -19,10 +19,7 @@ export class ControlsUI {
     this.actor.graphics.use(this.controlsText);
   }
 
-  public show(): void {
-    this.actor.graphics.opacity = 1;
-  }
-  public hide(): void {
-    this.actor.graphics.opacity = 0;
+  public show(show: boolean): void {
+    this.actor.graphics.opacity = show ? 1 : 0;
   }
 }

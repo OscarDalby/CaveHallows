@@ -11,6 +11,7 @@ export class SpeechBubble {
   });
   textActor: ex.Actor;
 
+  npcSpeeches: string[] = ["Hello!", "How are you?", "I'm fine, thank you!"];
   speechIndex: number = 0;
   loadedSpeeches: string[] = [];
 
@@ -213,16 +214,10 @@ export class SpeechBubble {
     return output;
   };
 
-  private show(): void {
-    this.textActor.graphics.opacity = 1;
-    this.bubbleBackgroundActor.graphics.opacity = 1;
-    this.bubbleGroupActor.graphics.opacity = 1;
-  }
-
-  private hide(): void {
-    this.textActor.graphics.opacity = 0;
-    this.bubbleBackgroundActor.graphics.opacity = 0;
-    this.bubbleGroupActor.graphics.opacity = 0;
+  private show(show: boolean): void {
+    this.textActor.graphics.opacity = show ? 1 : 0;
+    this.bubbleBackgroundActor.graphics.opacity = show ? 1 : 0;
+    this.bubbleGroupActor.graphics.opacity = show ? 1 : 0;
   }
 
   private setSpeech(speech: string): void {
@@ -230,15 +225,19 @@ export class SpeechBubble {
     this.text.text = this.speech;
     this.textActor.graphics.use(this.text);
   }
-  public loadSpeeches(speeches: string[]): void {
-    this.loadedSpeeches = speeches;
+  public loadSpeeches(speeches?: string[]): void {
+    if (speeches === undefined) {
+      this.loadedSpeeches = this.npcSpeeches;
+    } else {
+      this.loadedSpeeches = speeches;
+    }
     this.speechIndex = 0;
   }
 
   private beginConversation(): void {
-    this.show();
+    this.show(true);
     if (this.speechIndex >= this.loadedSpeeches.length) {
-      this.hide();
+      this.show(false);
       return;
     }
     this.setSpeech(this.loadedSpeeches[this.speechIndex]);
@@ -246,7 +245,6 @@ export class SpeechBubble {
 
   private incrementConversation(game: ex.Engine): void {
     if (game.input.keyboard.wasPressed(ex.Keys.A)) {
-      console.log("incrementing conversation");
       this.speechIndex++;
     }
   }
@@ -256,7 +254,7 @@ export class SpeechBubble {
       this.beginConversation();
       this.incrementConversation(game);
       if (this.speechIndex >= this.loadedSpeeches.length) {
-        this.hide();
+        this.show(false);
         player.canMove = true;
       }
       if (this.speechIndex > this.loadedSpeeches.length) {
