@@ -2,6 +2,8 @@ import { Player } from "./Player";
 import { spriteFont, opaqueTileSpriteSheet } from "./resources";
 import * as ex from "excalibur";
 
+interface SpeechBubbleProps {}
+
 export class SpeechBubble {
   speech: string = "";
   maxLettersInLine: number = 19;
@@ -11,7 +13,12 @@ export class SpeechBubble {
   });
   textActor: ex.Actor;
 
-  npcSpeeches: string[] = ["Hello!", "How are you?", "I'm fine, thank you!"];
+  npcSpeeches: string[] = [
+    "Hello!",
+    "Welcome to the cave hallows",
+    "My name is toothbrush and I will be here to help you on your journey",
+    "Go forth, fear nothing",
+  ];
   speechIndex: number = 0;
   loadedSpeeches: string[] = [];
 

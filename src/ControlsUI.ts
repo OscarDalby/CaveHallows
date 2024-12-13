@@ -1,6 +1,10 @@
 import * as ex from "excalibur";
 import { spriteFont } from "./resources";
 
+interface ControlsUIProps {
+  pos: ex.Vector;
+}
+
 export class ControlsUI {
   pos: ex.Vector;
   actor: ex.Actor;
@@ -10,8 +14,8 @@ export class ControlsUI {
     text: this.controlsString,
     font: spriteFont,
   });
-  constructor(x: number = 160, y: number = 100) {
-    this.pos = ex.vec(x, y);
+  constructor({ pos }: ControlsUIProps) {
+    this.pos = pos;
     this.actor = new ex.Actor({
       pos: this.pos,
     });

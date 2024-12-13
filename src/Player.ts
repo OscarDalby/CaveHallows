@@ -5,6 +5,11 @@ import { NPC } from "./NPC";
 import { Ladder } from "./Ladder";
 import { SpeechBubble } from "./SpeechBubble";
 
+interface PlayerProps {
+  pos: ex.Vector;
+  speechBubble: SpeechBubble;
+}
+
 export class Player extends ex.Actor {
   speechBubble: SpeechBubble;
   // constants
@@ -28,7 +33,7 @@ export class Player extends ex.Actor {
   ladderNearby: boolean = false;
   onLadder: boolean = false;
 
-  constructor(pos: ex.Vector, speechBubble: SpeechBubble) {
+  constructor({ pos, speechBubble }: PlayerProps) {
     super({
       pos,
       width: 8,

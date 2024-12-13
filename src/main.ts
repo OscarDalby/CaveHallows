@@ -81,12 +81,16 @@ game.start(loader).then(() => {
   sceneManager = new SceneManager();
 
   speechBubble = new SpeechBubble();
-  player = new Player(new ex.Vector(8, 0), speechBubble);
-  ui = new UI(game);
-  enemyStatic = new EnemyStatic(new ex.Vector(60, 90));
-  npc = new NPC(game, new ex.Vector(16, 80), "greeter");
-  ladder = new Ladder(new ex.Vector(32, 80));
-  controlsUI = new ControlsUI(160, 60);
+  player = new Player({ pos: new ex.Vector(8, 0), speechBubble: speechBubble });
+  ui = new UI({ game: game });
+  enemyStatic = new EnemyStatic({ pos: new ex.Vector(60, 90) });
+  npc = new NPC({
+    game: game,
+    pos: new ex.Vector(16, 80),
+    name: "greeter",
+  });
+  ladder = new Ladder({ pos: new ex.Vector(32, 80) });
+  controlsUI = new ControlsUI({ pos: new ex.Vector(160, 60) });
   prompt = new Prompt();
 
   Resources.TiledMap.addToScene(game.currentScene);

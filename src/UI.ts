@@ -2,13 +2,17 @@ import * as ex from "excalibur";
 import { tileSpriteSheet } from "./resources";
 import { Player } from "./Player";
 
+interface UIProps {
+  game: ex.Engine;
+}
+
 export class UI {
   numHearts: number = 3;
   hearts: ex.Actor[] = [];
   heldItemSprite: ex.Sprite;
   heldItemActor: ex.Actor;
 
-  constructor(game: ex.Engine) {
+  constructor({ game }: UIProps) {
     let heartSprite: ex.Sprite = tileSpriteSheet.getSprite(1, 7);
 
     for (let i = 0; i < this.numHearts; i++) {

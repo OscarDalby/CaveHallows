@@ -1,8 +1,12 @@
 import * as ex from "excalibur";
 import { enemyStaticAnim } from "../resources";
 
+interface EnemyStaticProps {
+  pos: ex.Vector;
+}
+
 export class EnemyStatic extends ex.Actor {
-  constructor(pos: ex.Vector) {
+  constructor({ pos }: EnemyStaticProps) {
     super({
       pos: pos,
       width: 8,

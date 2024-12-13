@@ -7,6 +7,8 @@ interface Screen {
   w: number;
 }
 
+interface SceneManagerProps {}
+
 export class SceneManager {
   screen: Screen = { h: 0, w: 0 };
 
@@ -30,7 +32,7 @@ export class SceneManager {
       player.pos.x = 0 + 8;
       // change scene to the next level
     } else if (player.pos.x < 0) {
-      player.pos.x = screenWidth - 8;
+      player.pos.x = this.screen.w - 8;
       // change scene to the previous level
     }
   }

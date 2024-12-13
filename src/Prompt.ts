@@ -2,6 +2,8 @@ import { Player } from "./Player";
 import * as ex from "excalibur";
 import { spriteFont } from "./resources";
 
+interface PromptProps {}
+
 export class Prompt {
   text: ex.Text;
   actor: ex.Actor;
