@@ -10,6 +10,7 @@ import { Ladder } from "./Ladder";
 import { ControlsUI } from "./ControlsUI";
 import { Prompt } from "./Prompt";
 import { SceneManager } from "./SceneManager";
+import { ParticleSystem } from "./ParticleSystem";
 
 let sceneManager: SceneManager;
 
@@ -22,6 +23,7 @@ let npc: NPC;
 let ladder: Ladder;
 let controlsUI: ControlsUI;
 let prompt: Prompt;
+let particleSystem: ParticleSystem;
 
 export class Game extends ex.Engine {
   isPaused: boolean = false;
@@ -92,6 +94,7 @@ game.start(loader).then(() => {
   ladder = new Ladder({ pos: new ex.Vector(32, 80) });
   controlsUI = new ControlsUI({ pos: new ex.Vector(160, 60) });
   prompt = new Prompt();
+  particleSystem = new ParticleSystem({ accelX: 2, accelY: 2 });
 
   Resources.TiledMap.addToScene(game.currentScene);
   game.add(player);
@@ -103,6 +106,7 @@ game.start(loader).then(() => {
   game.add(ladder);
   game.add(controlsUI.actor);
   game.add(prompt.actor);
+  game.add(particleSystem.actor);
 });
 
 game.onPreUpdate = (engine: ex.Engine, delta: number) => {
