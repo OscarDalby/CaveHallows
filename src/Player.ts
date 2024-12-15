@@ -206,17 +206,16 @@ export class Player extends ex.Actor {
   private useHeldItem(): void {
     if (this.heldItem === "torch") {
       this.torch.emitter.isEmitting = !this.torch.emitter.isEmitting;
-      console.log("torch emitting: " + this.torch.emitter.isEmitting);
     }
   }
 
   private cycleItems(): void {
     if (this.heldItem === "torch") {
+      this.torch.emitter.isEmitting = false;
       this.heldItem = "bow";
-      console.log("switched to bow");
     } else if (this.heldItem === "bow") {
       this.heldItem = "torch";
-      console.log("switched to torch");
+      this.torch.emitter.isEmitting = true;
     }
   }
 
