@@ -83,7 +83,7 @@ game.start(loader).then(() => {
   sceneManager = new SceneManager();
 
   speechBubble = new SpeechBubble();
-  torch = new ParticleSystem({ accX: 2, accY: 2, emitting: false });
+  torch = new ParticleSystem({ accX: 0, accY: 2, emitting: false });
   player = new Player({
     pos: new ex.Vector(8, 0),
     speechBubble: speechBubble,
@@ -103,9 +103,6 @@ game.start(loader).then(() => {
 
   Resources.TiledMap.addToScene(game.currentScene);
   game.add(player);
-  //game.add(speechBubble.bubbleBackgroundActor);
-  //game.add(speechBubble.bubbleGroupActor);
-  //game.add(speechBubble.textActor);
   game.add(enemyStatic);
   game.add(npc);
   game.add(ladder);

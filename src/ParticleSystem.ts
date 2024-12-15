@@ -85,10 +85,7 @@ export class ParticleSystem {
     this.actor.addChild(this.emitter);
   }
 
-  public updatePosition(x: number, y: number) {
-    this.actor.pos = new ex.Vector(x, y);
-    this.emitter.pos = new ex.Vector(x, y);
-  }
+  public update() { }
 
   public turnOn() {
     this.emitter.isEmitting = true;

@@ -233,8 +233,8 @@ export class Player extends ex.Actor {
     engine.add(this.speechBubble.bubbleGroupActor);
     engine.add(this.speechBubble.textActor);
 
-    engine.add(this.torch.actor);
-    engine.add(this.torch.emitter);
+    //engine.add(this.torch.actor);
+    this.addChild(this.torch.actor);
   }
 
   onPreUpdate(engine: ex.Engine, delta: number): void {}
@@ -263,6 +263,6 @@ export class Player extends ex.Actor {
     this.updateInvulnerableTime(delta);
 
     // items
-    this.torch.updatePosition(this.pos.x, this.pos.y);
+    this.torch.update();
   }
 }
