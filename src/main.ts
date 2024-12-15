@@ -23,7 +23,7 @@ let npc: NPC;
 let ladder: Ladder;
 let controlsUI: ControlsUI;
 let prompt: Prompt;
-let particleSystem: ParticleSystem;
+let torch: ParticleSystem;
 
 export class Game extends ex.Engine {
   isPaused: boolean = false;
@@ -83,7 +83,13 @@ game.start(loader).then(() => {
   sceneManager = new SceneManager();
 
   speechBubble = new SpeechBubble();
-  player = new Player({ pos: new ex.Vector(8, 0), speechBubble: speechBubble });
+  torch = new ParticleSystem({ accX: 2, accY: 2, emitting: false });
+  player = new Player({
+    pos: new ex.Vector(8, 0),
+    speechBubble: speechBubble,
+    torch: torch,
+  });
+  player.onInitialize(game);
   ui = new UI({ game: game });
   enemyStatic = new EnemyStatic({ pos: new ex.Vector(60, 90) });
   npc = new NPC({
@@ -94,19 +100,17 @@ game.start(loader).then(() => {
   ladder = new Ladder({ pos: new ex.Vector(32, 80) });
   controlsUI = new ControlsUI({ pos: new ex.Vector(160, 60) });
   prompt = new Prompt();
-  particleSystem = new ParticleSystem({ accX: 2, accY: 2 });
 
   Resources.TiledMap.addToScene(game.currentScene);
   game.add(player);
-  game.add(speechBubble.bubbleBackgroundActor);
-  game.add(speechBubble.bubbleGroupActor);
-  game.add(speechBubble.textActor);
+  //game.add(speechBubble.bubbleBackgroundActor);
+  //game.add(speechBubble.bubbleGroupActor);
+  //game.add(speechBubble.textActor);
   game.add(enemyStatic);
   game.add(npc);
   game.add(ladder);
   game.add(controlsUI.actor);
   game.add(prompt.actor);
-  game.add(particleSystem.actor);
 });
 
 game.onPreUpdate = (engine: ex.Engine, delta: number) => {

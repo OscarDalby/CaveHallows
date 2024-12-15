@@ -82,7 +82,6 @@ export class ParticleSystem {
       endColor: endColor || ex.Color.Yellow,
       focusAccel: focusAcc || 800,
     });
-
     this.actor.addChild(this.emitter);
   }
 

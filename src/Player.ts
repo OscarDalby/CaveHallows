@@ -4,10 +4,12 @@ import { EnemyStatic } from "./enemies/EnemyStatic";
 import { NPC } from "./NPC";
 import { Ladder } from "./Ladder";
 import { SpeechBubble } from "./SpeechBubble";
+import { ParticleSystem } from "./ParticleSystem";
 
 interface PlayerProps {
   pos: ex.Vector;
   speechBubble: SpeechBubble;
+  torch: ParticleSystem;
 }
 
 export class Player extends ex.Actor {
@@ -25,7 +27,6 @@ export class Player extends ex.Actor {
   grounded: boolean = true;
   numJumps: number = 1;
   hp: number = 3;
-  heldItem: string = "torch";
   invulnerableTime: number = 0;
   npcNearby: boolean = false;
   inConversation: boolean = false;
@@ -33,7 +34,11 @@ export class Player extends ex.Actor {
   ladderNearby: boolean = false;
   onLadder: boolean = false;
 
-  constructor({ pos, speechBubble }: PlayerProps) {
+  // items
+  heldItem: string = "torch";
+  torch: ParticleSystem;
+
+  constructor({ pos, speechBubble, torch }: PlayerProps) {
     super({
       pos,
       width: 8,
@@ -42,6 +47,7 @@ export class Player extends ex.Actor {
       collisionType: ex.CollisionType.Active,
     });
     this.speechBubble = speechBubble;
+    this.torch = torch;
   }
 
   private resetPosition(engine: ex.Engine): void {
@@ -165,6 +171,9 @@ export class Player extends ex.Actor {
     if (engine.input.keyboard.wasPressed(ex.Keys.S)) {
       this.useHeldItem();
     }
+    if (engine.input.keyboard.wasPressed(ex.Keys.Q)) {
+      this.cycleItems();
+    }
 
     if (engine.input.keyboard.wasPressed(ex.Keys.Up) && this.ladderNearby) {
       this.onLadder = true;
@@ -196,7 +205,18 @@ export class Player extends ex.Actor {
 
   private useHeldItem(): void {
     if (this.heldItem === "torch") {
-      console.log("used torch");
+      this.torch.emitter.isEmitting = !this.torch.emitter.isEmitting;
+      console.log("torch emitting: " + this.torch.emitter.isEmitting);
+    }
+  }
+
+  private cycleItems(): void {
+    if (this.heldItem === "torch") {
+      this.heldItem = "bow";
+      console.log("switched to bow");
+    } else if (this.heldItem === "bow") {
+      this.heldItem = "torch";
+      console.log("switched to torch");
     }
   }
 
@@ -208,7 +228,14 @@ export class Player extends ex.Actor {
     }
   }
 
-  onInitialize(engine: ex.Engine): void {}
+  onInitialize(engine: ex.Engine): void {
+    engine.add(this.speechBubble.bubbleBackgroundActor);
+    engine.add(this.speechBubble.bubbleGroupActor);
+    engine.add(this.speechBubble.textActor);
+
+    engine.add(this.torch.actor);
+    engine.add(this.torch.emitter);
+  }
 
   onPreUpdate(engine: ex.Engine, delta: number): void {}
 
@@ -234,5 +261,8 @@ export class Player extends ex.Actor {
     this.checkNpcCollision();
     this.checkLadderCollision();
     this.updateInvulnerableTime(delta);
+
+    // items
+    this.torch.updatePosition(this.pos.x, this.pos.y);
   }
 }
