@@ -9,7 +9,6 @@ import { ParticleSystem } from "./ParticleSystem";
 interface PlayerProps {
   pos: ex.Vector;
   speechBubble: SpeechBubble;
-  torch: ParticleSystem;
 }
 
 export class Player extends ex.Actor {
@@ -38,7 +37,7 @@ export class Player extends ex.Actor {
   heldItem: string = "torch";
   torch: ParticleSystem;
 
-  constructor({ pos, speechBubble, torch }: PlayerProps) {
+  constructor({ pos, speechBubble }: PlayerProps) {
     super({
       pos,
       width: 8,
@@ -47,7 +46,21 @@ export class Player extends ex.Actor {
       collisionType: ex.CollisionType.Active,
     });
     this.speechBubble = speechBubble;
-    this.torch = torch;
+    this.torch = new ParticleSystem({
+      accX: 0,
+      accY: -0.5,
+      emitting: false,
+      emitRate: 1400,
+      minA: (Math.PI * 11) / 8,
+      maxA: (Math.PI * 13) / 8,
+      minSize: 1,
+      maxSize: 5,
+      startSize: 4,
+      endSize: 1,
+      startColor: ex.Color.Red,
+      endColor: ex.Color.Yellow,
+      life: 250,
+    });
   }
 
   private resetPosition(engine: ex.Engine): void {
@@ -203,6 +216,10 @@ export class Player extends ex.Actor {
     }
   }
 
+  private updateTorchCone(): void {
+    this.torch.updateFocus(this.pos.x, this.pos.y - 5, 1100);
+  }
+
   private useHeldItem(): void {
     if (this.heldItem === "torch") {
       this.torch.emitter.isEmitting = !this.torch.emitter.isEmitting;
@@ -232,7 +249,6 @@ export class Player extends ex.Actor {
     engine.add(this.speechBubble.bubbleGroupActor);
     engine.add(this.speechBubble.textActor);
 
-    //engine.add(this.torch.actor);
     this.addChild(this.torch.actor);
   }
 
@@ -263,5 +279,6 @@ export class Player extends ex.Actor {
 
     // items
     this.torch.update();
+    this.updateTorchCone();
   }
 }

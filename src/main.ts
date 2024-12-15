@@ -89,11 +89,11 @@ game.start(loader).then(() => {
     emitting: false,
     minA: (Math.PI * 11) / 8,
     maxA: (Math.PI * 13) / 8,
+    focusAcc: 400,
   });
   player = new Player({
     pos: new ex.Vector(8, 0),
     speechBubble: speechBubble,
-    torch: torch,
   });
   player.onInitialize(game);
   ui = new UI({ game: game });

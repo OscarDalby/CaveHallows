@@ -85,6 +85,11 @@ export class ParticleSystem {
     this.actor.addChild(this.emitter);
   }
 
+  public updateFocus(x: number, y: number, speed: number) {
+    this.emitter.focus = new ex.Vector(x, y);
+    this.emitter.focusAccel = speed;
+  }
+
   public update() { }
 
   public turnOn() {
