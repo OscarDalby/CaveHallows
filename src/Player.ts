@@ -32,10 +32,12 @@ export class Player extends ex.Actor {
   canMove: boolean = true;
   ladderNearby: boolean = false;
   onLadder: boolean = false;
+  dir: string = "right";
 
   // items
   heldItem: string = "torch";
   torch: ParticleSystem;
+  torchOffset: ex.Vector = new ex.Vector(4, -2);
 
   constructor({ pos, speechBubble }: PlayerProps) {
     super({
@@ -108,14 +110,6 @@ export class Player extends ex.Actor {
     }
   }
 
-  private checkDirection(): void {
-    if (this.vel.x > 0) {
-      this.graphics.flipHorizontal = false;
-    } else if (this.vel.x < 0) {
-      this.graphics.flipHorizontal = true;
-    }
-  }
-
   private jump(): void {
     if (this.numJumps <= 0 || !this.grounded) {
       return;
@@ -176,9 +170,13 @@ export class Player extends ex.Actor {
     }
     if (engine.input.keyboard.isHeld(ex.Keys.Left)) {
       this.vel.x -= this.accMag;
+      this.graphics.flipHorizontal = true;
+      this.dir = "left";
     }
     if (engine.input.keyboard.isHeld(ex.Keys.Right)) {
       this.vel.x += this.accMag;
+      this.graphics.flipHorizontal = false;
+      this.dir = "right";
     }
 
     if (engine.input.keyboard.wasPressed(ex.Keys.S)) {
@@ -217,7 +215,19 @@ export class Player extends ex.Actor {
   }
 
   private updateTorchCone(): void {
-    this.torch.updateFocus(this.pos.x, this.pos.y - 5, 1100);
+    if (this.dir === "left") {
+      this.torch.updateFocus(
+        this.pos.x - this.torchOffset.x,
+        this.pos.y - 5,
+        1200,
+      );
+    } else if (this.dir === "right") {
+      this.torch.updateFocus(
+        this.pos.x + this.torchOffset.x,
+        this.pos.y - 5,
+        1200,
+      );
+    }
   }
 
   private useHeldItem(): void {
@@ -260,7 +270,6 @@ export class Player extends ex.Actor {
 
     // check player states
     this.checkMoving();
-    this.checkDirection();
     this.checkIfGrounded();
     this.updateInteractions(engine);
 
@@ -280,5 +289,17 @@ export class Player extends ex.Actor {
     // items
     this.torch.update();
     this.updateTorchCone();
+
+    if (this.dir === "left") {
+      this.torch.actor.pos = new ex.Vector(
+        -this.torchOffset.x,
+        this.torchOffset.y,
+      );
+    } else if (this.dir === "right") {
+      this.torch.actor.pos = new ex.Vector(
+        this.torchOffset.x,
+        this.torchOffset.y,
+      );
+    }
   }
 }
