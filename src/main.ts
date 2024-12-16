@@ -11,6 +11,7 @@ import { ControlsUI } from "./ControlsUI";
 import { Prompt } from "./Prompt";
 import { SceneManager } from "./SceneManager";
 import { ParticleSystem } from "./ParticleSystem";
+import { Mask } from "./Mask";
 
 let sceneManager: SceneManager;
 
@@ -25,6 +26,8 @@ let controlsUI: ControlsUI;
 let prompt: Prompt;
 let torch: ParticleSystem;
 
+let mask: Mask;
+
 export class Game extends ex.Engine {
   isPaused: boolean = false;
   controlsUIVisible: boolean = false;
@@ -33,7 +36,7 @@ export class Game extends ex.Engine {
       width: 128,
       height: 128,
       canvasElementId: "game",
-      backgroundColor: ex.Color.Blue,
+      backgroundColor: ex.Color.Black,
       pixelArt: true,
       pixelRatio: 6,
     });
@@ -99,13 +102,14 @@ game.start(loader).then(() => {
   ui = new UI({ game: game });
   enemyStatic = new EnemyStatic({ pos: new ex.Vector(60, 90) });
   npc = new NPC({
-    game: game,
     pos: new ex.Vector(16, 80),
     name: "greeter",
   });
   ladder = new Ladder({ pos: new ex.Vector(32, 80) });
   controlsUI = new ControlsUI({ pos: new ex.Vector(160, 60) });
   prompt = new Prompt();
+
+  mask = new Mask(game);
 
   Resources.TiledMap.addToScene(game.currentScene);
   game.add(player);
@@ -114,6 +118,7 @@ game.start(loader).then(() => {
   game.add(ladder);
   game.add(controlsUI.actor);
   game.add(prompt.actor);
+  game.add(mask);
 });
 
 game.onPreUpdate = (engine: ex.Engine, delta: number) => {
@@ -121,4 +126,8 @@ game.onPreUpdate = (engine: ex.Engine, delta: number) => {
   ui.update(game, player);
   speechBubble.update(game, player);
   prompt.update(player);
+};
+
+game.onPostDraw = (ctx: ex.ExcaliburGraphicsContext, delta: number) => {
+  mask.onPostDraw(ctx);
 };

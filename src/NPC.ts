@@ -3,14 +3,13 @@ import { npcAnim, spriteFont } from "./resources";
 import { Player } from "./Player";
 
 interface NPCProps {
-  game: ex.Engine;
   pos: ex.Vector;
   name: string;
 }
 
 export class NPC extends ex.Actor {
   playerNearby: boolean = false;
-  constructor({ game, pos, name }: NPCProps) {
+  constructor({ pos, name }: NPCProps) {
     super({
       pos: pos,
       width: 8,

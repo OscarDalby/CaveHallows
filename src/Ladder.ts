@@ -11,7 +11,7 @@ export class Ladder extends ex.Actor {
       pos: pos,
       width: 8,
       height: 8,
-      z: 3,
+      z: 10,
       collisionType: ex.CollisionType.Passive,
       anchor: ex.Vector.Zero,
     });
