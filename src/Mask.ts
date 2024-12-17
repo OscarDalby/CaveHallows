@@ -10,8 +10,6 @@ export class Mask extends ex.Actor {
       color: ex.Color.Transparent,
       z: 150,
     });
-    console.log("Mask created", game.halfDrawWidth, game.halfDrawHeight);
-    console.log("Mask created", game.drawWidth, game.drawHeight);
   }
 
   onPostDraw(ctx: ex.ExcaliburGraphicsContext) {

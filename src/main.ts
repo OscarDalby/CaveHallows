@@ -129,5 +129,5 @@ game.onPreUpdate = (engine: ex.Engine, delta: number) => {
 };
 
 game.onPostDraw = (ctx: ex.ExcaliburGraphicsContext, delta: number) => {
-  mask.onPostDraw(ctx);
+  //mask.onPostDraw(ctx);
 };
