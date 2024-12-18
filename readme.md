@@ -4,3 +4,5 @@
 
 npm i
 npm start
+
+![sample](sample.gif)
