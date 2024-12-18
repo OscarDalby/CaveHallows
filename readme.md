@@ -2,7 +2,7 @@
 
 ## Running locally
 
-npm i
-npm start
+### npm i
+### npm start
 
 ![sample](sample.gif)
